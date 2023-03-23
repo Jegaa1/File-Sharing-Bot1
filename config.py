@@ -54,6 +54,10 @@ CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", None)
 #set True if you want to prevent users from forwarding files from bot
 PROTECT_CONTENT = True if os.environ.get('PROTECT_CONTENT', "False") == "True" else False
 
+#shortlink
+SITE = os.environ.get("SITE", "tnlink.in")
+API = os.environ.get("API", "003db0d0a2e56943b93dc0abd80e1260a17166c8")
+
 #Set true if you want Disable your Channel Posts Share button
 if os.environ.get("DISABLE_CHANNEL_BUTTON", None) == 'True':
     DISABLE_CHANNEL_BUTTON = True
