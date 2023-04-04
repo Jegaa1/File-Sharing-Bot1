@@ -7,6 +7,10 @@ from config import SITE, API
 ####################  Tnlink  ####################
 
 async def get_shortlink(link):
+    
+    if not (API and SITE):
+        return link
+    
     https = link.split(":")[0]
     if "http" == https:
         https = "https"
