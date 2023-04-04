@@ -8,7 +8,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 
-
+from dotenv import load_dotenv
+load_dotenv()
 #Bot token @Botfather
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6059610280:AAEoR1vdoWvv3vLAdwMKX1Qk4b_RebslKZQ")
 
