@@ -41,7 +41,7 @@ TUT_VID = os.environ.get("TUT_VID","https://t.me/demoshort/45")
 
 
 #force sub channel id, if you want enable force sub
-FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "-1002057474570"))
+FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "-1002092476960"))
 
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "10"))
 
