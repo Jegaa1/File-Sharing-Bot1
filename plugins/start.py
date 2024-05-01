@@ -126,8 +126,11 @@ async def start_command(client: Client, message: Message):
                 except:
                     pass
 
-            SD = await message.reply_text("Friends! Files will be deleted After 600 seconds. Save them to the Saved Message now!")
+            SD = await message.reply_text("Friends! Files will be deleted After 10min. Save them to the Saved Message now!")
             await asyncio.sleep(SECONDS)
+            await react_msg(client, message)
+            return
+
 
             for snt_msg in snt_msgs:
                 try:
