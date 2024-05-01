@@ -154,7 +154,9 @@ async def start_command(client: Client, message: Message):
                 disable_web_page_preview=True,
                 quote=True
             )
-        
+            await react_msg(client, message)
+            return
+
 
         else:
             verify_status = await get_verify_status(id)
