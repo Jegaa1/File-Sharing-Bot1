@@ -289,7 +289,8 @@ async def react_msg(client,message):
         chat_id=message.chat.id, message_id=message.id, emoji=rnd_emoji, big=True
     )
     return
-
+    await react_msg(client, message)
+    
 @Bot.on_message(filters.private & filters.command('broadcast') & filters.user(ADMINS))
 async def send_text(client: Bot, message: Message):
     if message.reply_to_message:
