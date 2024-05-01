@@ -154,6 +154,7 @@ async def start_command(client: Client, message: Message):
                 disable_web_page_preview=True,
                 quote=True
             )
+        await react_msg(client, message)
 
         else:
             verify_status = await get_verify_status(id)
@@ -223,73 +224,6 @@ async def get_users(client: Bot, message: Message):
     users = await full_userbase()
     await msg.edit(f"{len(users)} users are using this bot")
 
-@Bot.on_message(filters.all)
-async def react_msg(client,message):
-    emojis = [
-        "👍",
-        "👎",
-        "❤️",
-        "🔥",
-        "🥰",
-        "👏",
-        "😁",
-        "🤔",
-        "😱",
-        "🎉",
-        "🤩",
-        "🙏",
-        "👌",
-        "🕊",
-        "🤡",
-        "🥱",
-        "😍",
-        "🐳",
-        "❤️‍🔥",
-        "🌚",
-        "🌭",
-        "💯",
-        "🤣",
-        "⚡️",
-        "🏆",
-        "💔",
-        "🤨",
-        "😐",
-        "🍓",
-        "🍾",
-        "💋",
-        "😈",
-        "😴",
-        "🤓",
-        "👻",
-        "👨‍💻",
-        "👀",
-        "🙈",
-        "😇",
-        "🤝",
-        "✍️",
-        "🤗",
-        "🫡",
-        "🎅",
-        "🎄",
-        "☃️",
-        "💅",
-        "🤪",
-        "🗿",
-        "🆒",
-        "💘",
-        "🙉",
-        "🦄",
-        "😘",
-        "💊",
-        "🙊",
-        "😎",
-    ]
-    rnd_emoji = random.choice(emojis)
-    await client.send_reaction(
-        chat_id=message.chat.id, message_id=message.id, emoji=rnd_emoji, big=True
-    )
-    return
-    await react_msg(client, message)
     
 @Bot.on_message(filters.private & filters.command('broadcast') & filters.user(ADMINS))
 async def send_text(client: Bot, message: Message):
@@ -337,3 +271,71 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
         msg = await message.reply(REPLY_ERROR)
         await asyncio.sleep(8)
         await msg.delete()
+
+@Bot.on_message(filters.all)
+async def react_msg(client,message):
+    emojis = [
+        "👍",
+        "👎",
+        "❤️",
+        "🔥",
+        "🥰",
+        "👏",
+        "😁",
+        "🤔",
+        "😱",
+        "🎉",
+        "🤩",
+        "🙏",
+        "👌",
+        "🕊",
+        "🤡",
+        "🥱",
+        "😍",
+        "🐳",
+        "❤‍🔥",
+        "🌚",
+        "🌭",
+        "💯",
+        "🤣",
+        "⚡️",
+        "🏆",
+        "💔",
+        "🤨",
+        "😐",
+        "🍓",
+        "🍾",
+        "💋",
+        "😈",
+        "😴",
+        "🤓",
+        "👻",
+        "👨‍💻",
+        "👀",
+        "🙈",
+        "😇",
+        "🤝",
+        "✍️",
+        "🤗",
+        "🫡",
+        "🎅",
+        "🎄",
+        "☃️",
+        "💅",
+        "🤪",
+        "🗿",
+        "🆒",
+        "💘",
+        "🙉",
+        "🦄",
+        "😘",
+        "💊",
+        "🙊",
+        "😎",
+    ]
+    rnd_emoji = random.choice(emojis)
+    await client.send_reaction(
+        chat_id=message.chat.id, message_id=message.id, emoji=rnd_emoji, big=True
+    )
+    return
+
