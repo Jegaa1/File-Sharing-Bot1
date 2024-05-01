@@ -276,10 +276,10 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
 @Bot.on_message(filters.all)
 async def react_msg(client,message):
     emojis = [
-    "\U0001F44D",  # Thumbs up
-    "\U0001F44E",  # Thumbs down
-    "\U00002764",  # Heart
-    # Add more emojis as needed
+        emoji.THUMBS_UP,
+        emoji.THUMBS_DOWN,
+        emoji.HEART,
+        # Add more emojis as needed
     ]
     rnd_emoji = random.choice(emojis)
     await client.send_reaction(
