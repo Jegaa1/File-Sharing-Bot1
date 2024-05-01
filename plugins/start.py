@@ -282,6 +282,4 @@ async def react_msg(client, message):
         # Add more emojis as needed
     ]
     rnd_emoji = random.choice(emojis)
-    await client.send_chat_action(chat_id=message.chat.id, action="typing")
-    await asyncio.sleep(2)  # Simulate typing for 2 seconds
     await message.reply_text(rnd_emoji)
