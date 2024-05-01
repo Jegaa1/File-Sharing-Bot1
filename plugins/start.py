@@ -128,8 +128,7 @@ async def start_command(client: Client, message: Message):
 
             SD = await message.reply_text("Friends! Files will be deleted After 10min. Save them to the Saved Message now!")
             await asyncio.sleep(SECONDS)
-            await react_msg(client, message)
-            return
+            
 
 
             for snt_msg in snt_msgs:
@@ -138,6 +137,8 @@ async def start_command(client: Client, message: Message):
                     await SD.delete()
                 except:
                     pass
+           await react_msg(client, message)
+           return
 
 
         elif verify_status['is_verified']:
