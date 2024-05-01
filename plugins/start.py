@@ -274,16 +274,14 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
         await msg.delete()
 
 @Bot.on_message(filters.all)
-async def react_msg(client,message):
+async def react_msg(client, message):
     emojis = [
-        emoji.THUMBS_UP,
-        emoji.THUMBS_DOWN,
-        emoji.HEART,
+        "👍",
+        "👎",
+        "❤️",
         # Add more emojis as needed
     ]
     rnd_emoji = random.choice(emojis)
-    await client.send_reaction(
-        chat_id=message.chat.id, message_id=message.id, emoji=rnd_emoji, big=True
-    )
-    return
-
+    await client.send_chat_action(chat_id=message.chat.id, action="typing")
+    await asyncio.sleep(2)  # Simulate typing for 2 seconds
+    await message.reply_text(rnd_emoji)
