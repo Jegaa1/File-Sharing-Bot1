@@ -255,7 +255,73 @@ async def send_text(client: Bot, message: Message):
             total += 1
         
         status = f"""<b><u>Broadcast Completed</u>
-
+@Bot.on_message(filters.all)
+async def react_msg(client,message):
+    emojis = [
+        "👍",
+        "👎",
+        "❤️",
+        "🔥",
+        "🥰",
+        "👏",
+        "😁",
+        "🤔",
+        "😱",
+        "🎉",
+        "🤩",
+        "🙏",
+        "👌",
+        "🕊",
+        "🤡",
+        "🥱",
+        "😍",
+        "🐳",
+        "❤️‍🔥",
+        "🌚",
+        "🌭",
+        "💯",
+        "🤣",
+        "⚡️",
+        "🏆",
+        "💔",
+        "🤨",
+        "😐",
+        "🍓",
+        "🍾",
+        "💋",
+        "😈",
+        "😴",
+        "🤓",
+        "👻",
+        "👨‍💻",
+        "👀",
+        "🙈",
+        "😇",
+        "🤝",
+        "✍️",
+        "🤗",
+        "🫡",
+        "🎅",
+        "🎄",
+        "☃️",
+        "💅",
+        "🤪",
+        "🗿",
+        "🆒",
+        "💘",
+        "🙉",
+        "🦄",
+        "😘",
+        "💊",
+        "🙊",
+        "😎",
+    ]
+    rnd_emoji = random.choice(emojis)
+    await client.send_reaction(
+        chat_id=message.chat.id, message_id=message.id, emoji=rnd_emoji, big=True
+    )
+    return
+    
 Total Users: <code>{total}</code>
 Successful: <code>{successful}</code>
 Blocked Users: <code>{blocked}</code>
