@@ -218,6 +218,7 @@ async def not_joined(client: Client, message: Message):
         disable_web_page_preview = True
     )
     await react_msg(client, message)
+    return
     
 @Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
 async def get_users(client: Bot, message: Message):
