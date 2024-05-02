@@ -35,6 +35,7 @@ from shortzy import Shortzy
 1min=60, 2min=60×2=120, 5min=60×5=300"""
 SECONDS = int(os.getenv("SECONDS", "600"))
 
+
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
     id = message.from_user.id
@@ -44,7 +45,26 @@ async def start_command(client: Client, message: Message):
     if id in OWNER_ID or id in ADMINS:
         # Skip verification for owner and admins
         # You can add any additional actions specific to the owner or admins here
-        await message.reply("Welcome, owner/admin! You have special privileges.")
+        reply_markup = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton('〆 மெயின் சேனல் 〆', url=f'https://t.me/+enbcoW7Zebk2NmY9')
+                ],
+                [
+                    InlineKeyboardButton('🍃 விஜய் டிவி​ 🍃', url=f'https://t.me/+CJghbYKDPtM0MmJl'),
+                    InlineKeyboardButton('🔆 சன் டிவி 🔆', url=f'https://t.me/+56ze8w46Xj4zYjNl')
+                ],
+                [
+                    InlineKeyboardButton('🎭 ஜி தமிழ் 🎭', url=f'https://t.me/+VdExpPLNSLVlMTdl'),
+                    InlineKeyboardButton('♻️ CWC Tamil ♻️', url=f'https://t.me/+EPYGIZ6a035jYjBl')
+                ]
+            ]
+        )
+
+        await message.reply(
+            "Welcome, owner/admin! You have special privileges.",
+            reply_markup=reply_markup
+        )
 
     else:
         # Rest of the code for non-owner and non-admin users
