@@ -40,13 +40,16 @@ async def start_command(client: Client, message: Message):
     id = message.from_user.id
     OWNER_ID = ADMINS  # Fetch the owner's ID from config
 
-    # Check if the user is the owner
-    if id == OWNER_ID:
-        # Owner-specific actions
-        # You can add any additional actions specific to the owner here
-        await message.reply("ʏᴏᴜ ᴀʀᴇ ᴛʜᴇ ᴏᴡɴᴇʀ! ᴀᴅᴅɪᴛɪᴏɴᴀʟ ᴀᴄᴛɪᴏɴs ᴄᴀɴ ʙᴇ ᴀᴅᴅᴇᴅ ʜᴇʀᴇ.")
+    # Check if the user is the owner or an admin
+    if id in OWNER_ID or id in ADMINS:
+        # Skip verification for owner and admins
+        # You can add any additional actions specific to the owner or admins here
+        await message.reply("Welcome, owner/admin! You have special privileges.")
 
     else:
+        # Rest of the code for non-owner and non-admin users
+        # Including the verification process
+        # ...
         if not await present_user(id):
             try:
                 await add_user(id)
