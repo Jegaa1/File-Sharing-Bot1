@@ -65,7 +65,7 @@ async def start_command(client: Client, message: Message):
             "Welcome, owner/admin! You have special privileges.",
             reply_markup=reply_markup
         )
-        await react_msg(client, message)
+    
 
     else:
         # Rest of the code for non-owner and non-admin users
