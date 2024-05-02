@@ -42,7 +42,7 @@ async def start_command(client: Client, message: Message):
     OWNER_ID = ADMINS  # Fetch the owner's ID from config
 
     # Check if the user is the owner or an admin
-    if id in OWNER_ID or id in ADMINS:
+    if id == OWNER_ID:
         # Skip verification for owner and admins
         # You can add any additional actions specific to the owner or admins here
         reply_markup = InlineKeyboardMarkup(
