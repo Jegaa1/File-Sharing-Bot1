@@ -66,7 +66,6 @@ async def start_command(client: Client, message: Message):
             reply_markup=reply_markup
         )
         await react_msg(client, message)
-        return
 
     else:
         # Rest of the code for non-owner and non-admin users
