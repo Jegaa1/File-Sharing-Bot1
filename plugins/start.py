@@ -6,7 +6,7 @@ import random
 import re
 import string
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, time as dt_time, timedelta
 
 from pyrogram import Client, filters, __version__, emoji
 from pyrogram.enums import ParseMode
@@ -40,13 +40,12 @@ ADMINS = [880087645]
 
 def get_time_until_1159_pm():
     now = datetime.now()
-    eleven_fifty_nine_pm_today = datetime.combine(now.date(), time(23, 59))
+    eleven_fifty_nine_pm_today = datetime.combine(now.date(), dt_time(23, 59))
     return (eleven_fifty_nine_pm_today - now).total_seconds()
 
 # Example usage
 seconds_until_1159_pm = get_time_until_1159_pm()
 print(f"Time until 11:59 PM: {seconds_until_1159_pm} seconds")
-
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
