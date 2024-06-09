@@ -47,6 +47,7 @@ def get_time_until_1159_pm():
 seconds_until_1159_pm = get_time_until_1159_pm()
 print(f"Time until 11:59 PM: {seconds_until_1159_pm} seconds")
 
+
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
     id = message.from_user.id
