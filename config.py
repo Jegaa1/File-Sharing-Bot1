@@ -37,7 +37,7 @@ SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "vipurl.in")
 SHORTLINK_API = os.environ.get("SHORTLINK_API", "5ef4a4aeeb9be77f4060ac10d1e911a5183e5b49")
 VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', 43200)) # Add time in seconds
 IS_VERIFY = os.environ.get("IS_VERIFY", "True")
-TUT_VID = os.environ.get("TUT_VID","https://t.me/demoshort/45")
+TUT_VID = os.environ.get("TUT_VID","https://t.me/demoshort/49")
 
 
 #force sub channel id, if you want enable force sub
@@ -48,7 +48,7 @@ TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "10"))
 #start message
 START_MSG = os.environ.get("START_MESSAGE", "Hello {first}\n\nI can store private files in Specified Channel and other users can access it from special link.")
 try:
-    ADMINS=[]
+    ADMINS=[880087645]
     for x in (os.environ.get("ADMINS", "880087645").split()):
         ADMINS.append(int(x))
 except ValueError:
