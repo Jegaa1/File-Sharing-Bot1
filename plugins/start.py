@@ -38,14 +38,14 @@ WAIT_MSG = """<b>Processing ...</b>"""
 REPLY_ERROR = """<code>Use this command as a reply to any telegram message with out any spaces.</code>"""
 ADMINS = [880087645]
 
-def get_time_until_midnight():
+def get_time_until_1159_pm():
     now = datetime.now()
-    eleven_fifty_nine_pm_today = datetime.combine(now.date(), datetime.min.time()) + timedelta(days=1) - timedelta(minutes=1)
+    eleven_fifty_nine_pm_today = datetime.combine(now.date(), time(23, 59))
     return (eleven_fifty_nine_pm_today - now).total_seconds()
 
 # Example usage
-seconds_until_midnight = get_time_until_midnight()
-print(f"Time until 11:59 PM: {seconds_until_midnight} seconds")
+seconds_until_1159_pm = get_time_until_1159_pm()
+print(f"Time until 11:59 PM: {seconds_until_1159_pm} seconds")
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
