@@ -51,7 +51,7 @@ async def start_command(client: Client, message: Message):
     id = message.from_user.id
 
     # Check if user is an admin
-    if id in ADMINS:
+    if id == ADMINS:
         reply_markup = InlineKeyboardMarkup(
             [
                 [InlineKeyboardButton('〆 மெயின் சேனல் 〆', url='https://t.me/+enbcoW7Zebk2NmY9')],
