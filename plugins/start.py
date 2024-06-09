@@ -40,8 +40,12 @@ ADMINS = [880087645]
 
 def get_time_until_midnight():
     now = datetime.now()
-    next_midnight = datetime.combine(now + timedelta(days=1), datetime.min.time())
+    next_midnight = datetime.combine(now.date() + timedelta(days=1), datetime.min.time())
     return (next_midnight - now).total_seconds()
+
+# Example usage
+seconds_until_midnight = get_time_until_midnight()
+print(f"Time until midnight: {seconds_until_midnight} seconds")
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
