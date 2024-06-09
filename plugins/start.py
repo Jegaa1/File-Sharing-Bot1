@@ -40,8 +40,8 @@ ADMINS = [880087645]
 
 def get_time_until_midnight():
     now = datetime.now()
-    next_midnight = datetime.combine(now.date() + timedelta(days=1), datetime.min.time())
-    return (next_midnight - now).total_seconds()
+    midnight_today = datetime.combine(now.date(), datetime.max.time())
+    return (midnight_today - now).total_seconds()
 
 # Example usage
 seconds_until_midnight = get_time_until_midnight()
