@@ -6,7 +6,7 @@ import random
 import re
 import string
 import time
-from datetime import datetime, time as dt_time, timedelta
+from datetime import datetime, timedelta
 
 from pyrogram import Client, filters, __version__, emoji
 from pyrogram.enums import ParseMode
@@ -38,33 +38,10 @@ WAIT_MSG = """<b>Processing ...</b>"""
 REPLY_ERROR = """<code>Use this command as a reply to any telegram message with out any spaces.</code>"""
 ADMINS = [880087645]
 
-def get_time_until_1159_pm():
+def get_time_until_midnight():
     now = datetime.now()
-    eleven_fifty_nine_pm_today = datetime.combine(now.date(), dt_time(23, 59))
-    return (eleven_fifty_nine_pm_today - now).total_seconds()
-
-def generate_new_token():
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-
-async def reset_token_every_midnight():
-    while True:
-        now = datetime.now()
-        next_midnight = datetime.combine(now.date() + timedelta(days=1), dt_time(0, 0))
-        time_until_midnight = (next_midnight - now).total_seconds()
-        await asyncio.sleep(time_until_midnight)
-
-        # Generate and set new token
-        new_token = generate_new_token()
-        # Call your function to update the token for all users
-        await update_all_user_tokens(new_token)
-
-        # Sleep until next reset time
-        await asyncio.sleep(get_time_until_1159_pm())
-
-async def update_all_user_tokens(new_token):
-    users = await full_userbase()
-    for user_id in users:
-        await update_verify_status(user_id, verify_token=new_token, link="")
+    next_midnight = datetime.combine(now + timedelta(days=1), datetime.min.time())
+    return (next_midnight - now).total_seconds()
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
@@ -101,7 +78,7 @@ async def start_command(client: Client, message: Message):
                 pass
 
         verify_status = await get_verify_status(id)
-        if verify_status['is_verified'] and (time.time() - verify_status['verified_time']) > get_time_until_1159_pm():
+        if verify_status['is_verified'] and (time.time() - verify_status['verified_time']) > get_time_until_midnight():
             await update_verify_status(id, is_verified=False)
 
         if "verify_" in message.text:
@@ -224,16 +201,12 @@ async def start_command(client: Client, message: Message):
                 token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
                 await update_verify_status(id, verify_token=token, link="")
                 link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
-            btn = [
-                [InlineKeyboardButton("𝐂𝐥𝐢𝐜𝐤 𝐇𝐞𝐫𝐞", url=link)],
-                [InlineKeyboardButton('𝐇𝐨𝐰 𝐓𝐨 𝐨𝐩𝐞𝐧 𝐭𝐡𝐢𝐬 𝐥𝐢𝐧𝐤', url=TUT_VID)]
-            ]
-            await message.reply(f"Your Ads token is expired, refresh your token and try again. \n\nToken Timeout: <b>{get_exp_time(get_time_until_midnight())}</b>\n\n𝗪𝗵𝗮𝘁 𝗶𝘀 𝘁𝗵𝗲 𝘁𝗼𝗸𝗲𝗻?\n\n𝗧𝗵𝗶𝘀 𝗶𝘀 𝗮𝗻 𝗮𝗱𝘀 𝘁𝗼𝗸𝗲𝗻. 𝗜𝗳 𝘆𝗼𝘂 𝗽𝗮𝘀𝘀 𝟭 𝗮𝗱, 𝘆𝗼𝘂 𝗰𝗮𝗻 𝘂𝘀𝗲 𝘁𝗵𝗲 𝗯𝗼𝘁 𝘂𝗻𝘁𝗶𝗹 𝟭𝟮 𝗔𝗠.", reply_markup=InlineKeyboardMarkup(btn), protect_content=False, quote=True)
+                btn = [
+                    [InlineKeyboardButton("𝐂𝐥𝐢𝐜𝐤 𝐇𝐞𝐫𝐞", url=link)],
+                    [InlineKeyboardButton('𝐇𝐨𝐰 𝐓𝐨 𝐨𝐩𝐞𝐧 𝐭𝐡𝐢𝐬 𝐥𝐢𝐧𝐤', url=TUT_VID)]
+                ]
+                await message.reply(f"𝐘𝐨𝐮𝐫 𝐀𝐝𝐬 𝐭𝐨𝐤𝐞𝐧 𝐢𝐬 𝐞𝐱𝐩𝐢𝐫𝐞𝐝, 𝐫𝐞𝐟𝐫𝐞𝐬𝐡 𝐲𝐨𝐮𝐫 𝐭𝐨𝐤𝐞𝐧 𝐚𝐧𝐝 𝐭𝐫𝐲 𝐚𝐠𝐚𝐢𝐧. \n\n𝐓𝐨𝐤𝐞𝐧 𝐓𝐢𝐦𝐞𝐨𝐮𝐭: <b>{get_exp_time(get_time_until_midnight())}</b>\n\n𝗪𝗵𝗮𝘁 𝗶𝘀 𝘁𝗵𝗲 𝘁𝗼𝗸𝗲𝗻?\n\n𝗧𝗵𝗶𝘀 𝗶𝘀 𝗮𝗻 𝗮𝗱𝘀 𝘁𝗼𝗸𝗲𝗻. 𝗜𝗳 𝘆𝗼𝘂 𝗽𝗮𝘀𝘀 𝟭 𝗮𝗱, 𝘆𝗼𝘂 𝗰𝗮𝗻 𝘂𝘀𝗲 𝘁𝗵𝗲 𝗯𝗼𝘁 𝘂𝗻𝘁𝗶𝗹 𝟭𝟮 𝗔𝗠.", reply_markup=InlineKeyboardMarkup(btn), protect_content=False, quote=True)
 
-
-
-            
-            
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
     buttons = [
