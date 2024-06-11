@@ -50,8 +50,9 @@ def get_time_until_midnight():
     
     # Calculate the time until midnight minus the given timedelta
     time_until_midnight = next_midnight - now - minus_timedelta
+
+    return (time_until_midnight).total_seconds()
     
-    return time_until_midnight.total_seconds()
 
 print(get_time_until_midnight())
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
