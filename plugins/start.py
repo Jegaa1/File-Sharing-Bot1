@@ -40,10 +40,20 @@ ADMINS = [880087645]
 
 def get_time_until_midnight():
     now = datetime.now()
-    next_midnight = datetime.combine(now + timedelta(days=1), datetime.min.time())
-    minus = 19800
-    return (next_midnight - now - minus).total_seconds()
+    next_midnight = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+    
+    # Assuming `minus` is an integer representing seconds
+    minus = 19800  # for example, 19800 seconds (5 hours and 30 minutes)
+    
+    # Convert `minus` to a timedelta object
+    minus_timedelta = timedelta(seconds=minus)
+    
+    # Calculate the time until midnight minus the given timedelta
+    time_until_midnight = next_midnight - now - minus_timedelta
+    
+    return time_until_midnight.total_seconds()
 
+print(get_time_until_midnight())
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
     id = message.from_user.id
