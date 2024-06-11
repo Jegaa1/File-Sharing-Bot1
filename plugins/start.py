@@ -88,7 +88,7 @@ async def start_command(client: Client, message: Message):
             await update_verify_status(id, is_verified=True, verified_time=time.time())
             if verify_status["link"] == "":
                 reply_markup = None
-            await message.reply(f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘃𝗲𝗿𝗶𝗳𝗶𝗲𝗱 𝗮𝗻𝗱 𝘃𝗮𝗹𝗶𝗱 𝘂𝗻𝘁𝗶𝗹 𝟭𝟮 𝗔𝗠", reply_markup=reply_markup, protect_content=False, quote=True)
+            await message.reply(f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘃𝗲𝗿𝗶𝗳𝗶𝗲𝗱 𝗮𝗻𝗱 𝘃𝗮𝗹𝗶𝗱 𝘂𝗻𝘁𝗶𝗹 <b>5.30</b> 𝗔𝗠", reply_markup=reply_markup, protect_content=False, quote=True)
 
         elif len(message.text) > 7 and verify_status['is_verified']:
             try:
