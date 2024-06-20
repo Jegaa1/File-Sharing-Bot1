@@ -60,7 +60,7 @@ async def start_command(client: Client, message: Message):
     id = message.from_user.id
     owner_id = ADMINS
 
-    if id == ADMINS:
+    if id == owner_id:
         reply_markup = InlineKeyboardMarkup(
             [
                 [
