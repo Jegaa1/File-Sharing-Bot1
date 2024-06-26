@@ -43,13 +43,13 @@ def get_time_until_midnight():
     next_midnight = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
     
     # Assuming `minus` is an integer representing seconds
-    minus = 19800  # for example, 19800 seconds (5 hours and 30 minutes)
+   # minus = 19800  # for example, 19800 seconds (5 hours and 30 minutes)
     
     # Convert `minus` to a timedelta object
-    minus_timedelta = timedelta(seconds=minus)
+    #minus_timedelta = timedelta(seconds=minus)
     
     # Calculate the time until midnight minus the given timedelta
-    time_until_midnight = next_midnight - now - minus_timedelta
+    time_until_midnight = next_midnight - now
 
     return (time_until_midnight).total_seconds()
     
