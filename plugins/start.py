@@ -179,8 +179,8 @@ async def start_command(client: Client, message: Message):
                     await SD.delete()
                 except:
                     pass
-            await react_msg(client, message)
-            return
+            #await react_msg(client, message)
+            #return
 
         elif verify_status['is_verified']:
             reply_markup = InlineKeyboardMarkup(
