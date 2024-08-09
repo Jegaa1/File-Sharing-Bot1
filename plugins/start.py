@@ -19,7 +19,7 @@ from config import (
     FORCE_MSG,
     START_MSG,
     CUSTOM_CAPTION,
-    IS_VERIFY,
+    USE_SHORTLINK,
     SHORTLINK_API,
     SHORTLINK_URL,
     DISABLE_CHANNEL_BUTTON,
@@ -60,57 +60,37 @@ print(get_time_until_midnight())
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
     id = message.from_user.id
-    owner_id = ADMINS
-
-    # Extract token if it exists
-    token = None
-    if len(message.command) > 1:
-        token = message.command[1]
-
-    # Check if the user is an admin
-    if id == ADMINS:
-        reply_markup = InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton('〆 மெயின் சேனல் 〆', url=f'https://t.me/+enbcoW7Zebk2NmY9')
-                ],
-                [
-                    InlineKeyboardButton('🍃 விஜய் டிவி​ 🍃', url=f'https://t.me/+CJghbYKDPtM0MmJl'),
-                    InlineKeyboardButton('🔆 சன் டிவி 🔆', url=f'https://t.me/+56ze8w46Xj4zYjNl')
-                ],
-                [
-                    InlineKeyboardButton('🎭 ஜி தமிழ் 🎭', url=f'https://t.me/+VdExpPLNSLVlMTdl'),
-                    InlineKeyboardButton('♻️ CWC Tamil ♻️', url=f'https://t.me/+EPYGIZ6a035jYjBl')
-                ]
-            ]
-        )
-
-        await message.reply(
-            "Welcome, owner/admin! You have special privileges.",
-            reply_markup=reply_markup
-        )
-        return
-    else:
-        if not await present_user(id):
-            try:
-                await add_user(id)
-            except:
-                pass
+    if not await present_user(id):
+        try:
+            await add_user(id)
+        except:
+            pass
+    if USE_SHORTLINK:
+        for i in range(1):
+            if id in ADMINS:
+                continue
 
         verify_status = await get_verify_status(id)
         if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
             await update_verify_status(id, is_verified=False)
 
         if "verify_" in message.text:
-            _, token = message.text.split("_", 1)
-            if verify_status['verify_token'] != token:
-                return await message.reply("Your token is invalid or Expired. Try again by clicking /start")
-            await update_verify_status(id, is_verified=True, verified_time=time.time())
-            if verify_status["link"] == "":
-                reply_markup = None
-            await message.reply(f"Your token successfully verified and valid for: 24 Hour", reply_markup=reply_markup, protect_content=False, quote=True)
-
-        elif len(message.text) > 7 and verify_status['is_verified']:
+                _, token = message.text.split("_", 1)
+                if verify_status['verify_token'] != token:
+                    return await message.reply("Your token is invalid or Expired ⌛. Try again by clicking /start")
+                await update_verify_status(id, is_verified=True, verified_time=time.time())
+                if verify_status["link"] == "":
+                    reply_markup = None
+                await message.reply(f"Your token successfully verified and valid for: {get_exp_time(VERIFY_EXPIRE)} ⏳", reply_markup=reply_markup, protect_content=False, quote=True)
+    if len(message.text) > 7:
+        for i in range(1):
+            if USE_SHORTLINK : 
+                if id not in ADMINS:
+                    try:
+                        if not verify_status['is_verified']:
+                            continue
+                    except:
+                        continue
             try:
                 base64_string = message.text.split(" ", 1)[1]
             except:
@@ -138,11 +118,11 @@ async def start_command(client: Client, message: Message):
                     ids = [int(int(argument[1]) / abs(client.db_channel.id))]
                 except:
                     return
-            temp_msg = await message.reply("Please wait...")
+            temp_msg = await message.reply("Wait Bro...")
             try:
                 messages = await get_messages(client, ids)
             except:
-                await message.reply_text("Something went wrong..!")
+                await message.reply_text("Something went wrong..! 🥲")
                 return
             await temp_msg.delete()
             
@@ -170,62 +150,59 @@ async def start_command(client: Client, message: Message):
                 except:
                     pass
 
-            SD = await message.reply_text("Friends! Files will be deleted After 10min. Save them to the Saved Message now!")
-            await asyncio.sleep(SECONDS)
-
-            for snt_msg in snt_msgs:
+            notification_msg = await message.reply(f"<b>his file will be  deleted in  {SECONDS // 60} minutes. Please save or forward it to your saved messages before it gets deleted.</b>")
+            await asyncio.sleep(SECONDS)    
+            for snt_msg in snt_msgs:    
+                try:    
+                    await snt_msg.delete()  
+                except: 
+                    pass    
+            await notification_msg.edit("<b>Your file has been successfully deleted! 😼</b>")  
+            return  
+    for i in range(1):
+        if USE_SHORTLINK : 
+            if id not in ADMINS:
                 try:
-                    await snt_msg.delete()
-                    await SD.delete()
+                    if not verify_status['is_verified']:
+                        continue
                 except:
-                    pass
-            #await react_msg(client, message)
-            #return
-
-        elif verify_status['is_verified']:
-            reply_markup = InlineKeyboardMarkup(
+                    continue
+        reply_markup = InlineKeyboardMarkup(
+            [
                 [
-                    [
-                        InlineKeyboardButton('〆 மெயின் சேனல் 〆', url=f'https://t.me/+enbcoW7Zebk2NmY9')
-                    ],
-                    [
-                        InlineKeyboardButton('🍃 விஜய் டிவி​ 🍃', url=f'https://t.me/+CJghbYKDPtM0MmJl'),
-                        InlineKeyboardButton('🔆 சன் டிவி 🔆', url=f'https://t.me/+56ze8w46Xj4zYjNl')
-                    ],
-                    [
-                        InlineKeyboardButton('🎭 ஜி தமிழ் 🎭', url=f'https://t.me/+VdExpPLNSLVlMTdl'),
-                        InlineKeyboardButton('♻️ CWC Tamil ♻️', url=f'https://t.me/+EPYGIZ6a035jYjBl')
-                    ]
+                    InlineKeyboardButton("• ᴄʜᴀɴɴᴇʟs", callback_data="about"),
+                    InlineKeyboardButton("ᴄʟᴏsᴇ •", callback_data="close")
                 ]
-            )
-            await message.reply_text(
-                text=START_MSG.format(
-                    first=message.from_user.first_name,
-                    last=message.from_user.last_name,
-                    username=None if not message.from_user.username else '@' + message.from_user.username,
-                    mention=message.from_user.mention,
-                    id=message.from_user.id
-                ),
-                reply_markup=reply_markup,
-                disable_web_page_preview=True,
-                quote=True
-            )
-            await react_msg(client, message)
+            ]
+        )
+        await message.reply_text(
+            text=START_MSG.format(
+                first=message.from_user.first_name,
+                last=message.from_user.last_name,
+                username=None if not message.from_user.username else '@' + message.from_user.username,
+                mention=message.from_user.mention,
+                id=message.from_user.id
+            ),
+            reply_markup=reply_markup,
+            disable_web_page_preview=True,
+            quote=True
+        )
+        return
+    if USE_SHORTLINK : 
+        if id in ADMINS:
             return
-
-        else:
-            verify_status = await get_verify_status(id)
-            if IS_VERIFY and not verify_status['is_verified']:
-                short_url = f"publicearn.com"
-                TUT_VID = f"https://telegram.me/demoshort/50"
-                token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-                await update_verify_status(id, verify_token=token, link="")
-                link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
-                btn = [
-                    [InlineKeyboardButton("𝐂𝐥𝐢𝐜𝐤 𝐇𝐞𝐫𝐞", url=link)],
-                    [InlineKeyboardButton('𝐇𝐨𝐰 𝐓𝐨 𝐨𝐩𝐞𝐧 𝐭𝐡𝐢𝐬 𝐥𝐢𝐧𝐤', url=TUT_VID)]
-                ]
-                await message.reply(f"𝐘𝐨𝐮𝐫 𝐀𝐝𝐬 𝐭𝐨𝐤𝐞𝐧 𝐢𝐬 𝐞𝐱𝐩𝐢𝐫𝐞𝐝, 𝐫𝐞𝐟𝐫𝐞𝐬𝐡 𝐲𝐨𝐮𝐫 𝐭𝐨𝐤𝐞𝐧 𝐚𝐧𝐝 𝐭𝐫𝐲 𝐚𝐠𝐚𝐢𝐧. \n\n𝐓𝐨𝐤𝐞𝐧 𝐓𝐢𝐦𝐞𝐨𝐮𝐭: {get_exp_time(VERIFY_EXPIRE)}\n\n𝐖𝐡𝐚𝐭 𝐢𝐬 𝐭𝐡𝐞 𝐭𝐨𝐤𝐞𝐧?\n\n𝐓𝐡𝐢𝐬 𝐢𝐬 𝐚𝐧 𝐚𝐝𝐬 𝐭𝐨𝐤𝐞𝐧. 𝐈𝐟 𝐲𝐨𝐮 𝐩𝐚𝐬𝐬 𝟏 𝐚𝐝, 𝐲𝐨𝐮 𝐜𝐚𝐧 𝐮𝐬𝐞 𝐭𝐡𝐞 𝐛𝐨𝐭 𝐟𝐨𝐫 𝟐𝟒 𝐇𝐨𝐮𝐫 𝐚𝐟𝐭𝐞𝐫 𝐩𝐚𝐬𝐬𝐢𝐧𝐠 𝐭𝐡𝐞 𝐚𝐝.", reply_markup=InlineKeyboardMarkup(btn), protect_content=False, quote=True)
+        verify_status = await get_verify_status(id)
+        if not verify_status['is_verified']:
+            short_url = f"publicearn.com"
+            TUT_VID = f"https://telegram.me/demoshort/50"
+            token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+            await update_verify_status(id, verify_token=token, link="")
+            link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
+            btn = [
+                [InlineKeyboardButton("𝐂𝐥𝐢𝐜𝐤 𝐇𝐞𝐫𝐞", url=link)],
+                [InlineKeyboardButton('𝐇𝐨𝐰 𝐓𝐨 𝐨𝐩𝐞𝐧 𝐭𝐡𝐢𝐬 𝐥𝐢𝐧𝐤', url=TUT_VID)]
+            ]
+            await message.reply(f"𝐘𝐨𝐮𝐫 𝐀𝐝𝐬 𝐭𝐨𝐤𝐞𝐧 𝐢𝐬 𝐞𝐱𝐩𝐢𝐫𝐞𝐝, 𝐫𝐞𝐟𝐫𝐞𝐬𝐡 𝐲𝐨𝐮𝐫 𝐭𝐨𝐤𝐞𝐧 𝐚𝐧𝐝 𝐭𝐫𝐲 𝐚𝐠𝐚𝐢𝐧. \n\n𝐓𝐨𝐤𝐞𝐧 𝐓𝐢𝐦𝐞𝐨𝐮𝐭: {get_exp_time(VERIFY_EXPIRE)}\n\n𝐖𝐡𝐚𝐭 𝐢𝐬 𝐭𝐡𝐞 𝐭𝐨𝐤𝐞𝐧?\n\n𝐓𝐡𝐢𝐬 𝐢𝐬 𝐚𝐧 𝐚𝐝𝐬 𝐭𝐨𝐤𝐞𝐧. 𝐈𝐟 𝐲𝐨𝐮 𝐩𝐚𝐬𝐬 𝟏 𝐚𝐝, 𝐲𝐨𝐮 𝐜𝐚𝐧 𝐮𝐬𝐞 𝐭𝐡𝐞 𝐛𝐨𝐭 𝐟𝐨𝐫 𝟐𝟒 𝐇𝐨𝐮𝐫 𝐚𝐟𝐭𝐞𝐫 𝐩𝐚𝐬𝐬𝐢𝐧𝐠 𝐭𝐡𝐞 𝐚𝐝.", reply_markup=InlineKeyboardMarkup(btn), protect_content=False, quote=True)
 
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
@@ -321,4 +298,3 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
         msg = await message.reply(REPLY_ERROR)
         await asyncio.sleep(8)
         await msg.delete()
-
