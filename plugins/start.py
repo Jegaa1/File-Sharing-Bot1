@@ -1,4 +1,4 @@
-#Credit @Codeflix_bots
+# Credit @Codeflix_bots
 
 import asyncio
 import base64
@@ -11,7 +11,7 @@ import time
 
 from pyrogram import Client, filters, __version__
 from pyrogram.enums import ParseMode
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
 
 from bot import Bot
@@ -31,9 +31,8 @@ from config import (
 )
 from helper_func import subscribed, encode, decode, get_messages, get_shortlink, get_verify_status, update_verify_status, get_exp_time
 from database.database import add_user, del_user, full_userbase, present_user
-from shortzy import Shortzy
 
-"""add time in seconds for waiting before delete 
+"""Add time in seconds for waiting before delete 
 1 min = 60, 2 min = 60 × 2 = 120, 5 min = 60 × 5 = 300"""
 # SECONDS = int(os.getenv("SECONDS", "1200"))
 
@@ -45,9 +44,7 @@ async def start_command(client: Client, message: Message):
     # Check if the user is the owner
     if id == owner_id:
         # Owner-specific actions
-        # You can add any additional actions specific to the owner here
         await message.reply("You are the owner! Additional actions can be added here.")
-
     else:
         if not await present_user(id):
             try:
@@ -64,9 +61,19 @@ async def start_command(client: Client, message: Message):
             if verify_status['verify_token'] != token:
                 return await message.reply("Your token is invalid or Expired. Try again by clicking /start")
             await update_verify_status(id, is_verified=True, verified_time=time.time())
-            if verify_status["link"] == "":
-                reply_markup = None
-            await message.reply(f"Your token successfully verified and valid for: 24 Hour", reply_markup=reply_markup, protect_content=False, quote=True)
+            reply_markup = None
+            if verify_status["link"] != "":
+                reply_markup = InlineKeyboardMarkup(
+                    [
+                        [
+                            InlineKeyboardButton(
+                                text="• Click Here •",
+                                url=verify_status["link"]
+                            )
+                        ]
+                    ]
+                )
+            await message.reply(f"Your token was successfully verified and is valid for: 24 hours", reply_markup=reply_markup, protect_content=False, quote=True)
 
         elif len(message.text) > 7 and verify_status['is_verified']:
             try:
@@ -82,7 +89,7 @@ async def start_command(client: Client, message: Message):
                 except:
                     return
                 if start <= end:
-                    ids = range(start, end+1)
+                    ids = range(start, end + 1)
                 else:
                     ids = []
                     i = start
@@ -122,28 +129,32 @@ async def start_command(client: Client, message: Message):
                     await asyncio.sleep(0.5)
                     snt_msgs.append(snt_msg)
                 except FloodWait as e:
-            [
-                InlineKeyboardButton(
-                    text = '• ɴᴏᴡ ᴄʟɪᴄᴋ ʜᴇʀᴇ •',
-                    url = f"https://t.me/{client.username}?start={message.command[1]}"
-                )
+                    await asyncio.sleep(e.x)
+                    snt_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
+                    await asyncio.sleep(0.5)
+                    snt_msgs.append(snt_msg)
+                    
+            # Additional functionality for inline keyboard buttons
+            buttons = [
+                [
+                    InlineKeyboardButton(
+                        text='• ɴᴏᴡ ᴄʟɪᴄᴋ ʜᴇʀᴇ •',
+                        url=f"https://t.me/{client.username}?start={message.command[1]}"
+                    )
+                ]
             ]
-        )
-    except IndexError:
-        pass
-
-    await message.reply(
-        text = FORCE_MSG.format(
-                first = message.from_user.first_name,
-                last = message.from_user.last_name,
-                username = None if not message.from_user.username else '@' + message.from_user.username,
-                mention = message.from_user.mention,
-                id = message.from_user.id
-            ),
-        reply_markup = InlineKeyboardMarkup(buttons),
-        quote = True,
-        disable_web_page_preview = True
-    )
+            await message.reply(
+                text=FORCE_MSG.format(
+                    first=message.from_user.first_name,
+                    last=message.from_user.last_name,
+                    username=None if not message.from_user.username else '@' + message.from_user.username,
+                    mention=message.from_user.mention,
+                    id=message.from_user.id
+                ),
+                reply_markup=InlineKeyboardMarkup(buttons),
+                quote=True,
+                disable_web_page_preview=True
+            )
 
 @Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
 async def get_users(client: Bot, message: Message):
