@@ -89,7 +89,7 @@ async def start_command(client: Client, message: Message):
                 except:
                     return
                 if start <= end:
-                    ids = range(start, end + 1)
+                    ids = range(start, end+1)
                 else:
                     ids = []
                     i = start
@@ -131,30 +131,89 @@ async def start_command(client: Client, message: Message):
                 except FloodWait as e:
                     await asyncio.sleep(e.x)
                     snt_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
-                    await asyncio.sleep(0.5)
                     snt_msgs.append(snt_msg)
-                    
-            # Additional functionality for inline keyboard buttons
-            buttons = [
-                [
-                    InlineKeyboardButton(
-                        text='• ɴᴏᴡ ᴄʟɪᴄᴋ ʜᴇʀᴇ •',
-                        url=f"https://t.me/{client.username}?start={message.command[1]}"
-                    )
-                ]
-            ]
-            await message.reply(
-                text=FORCE_MSG.format(
+                except:
+                    pass
+
+            SD = await message.reply_text("Baka! Files will be deleted After 300 seconds. Save them to the Saved Message now!")
+            await asyncio.sleep(300)
+
+            for snt_msg in snt_msgs:
+                try:
+                    await snt_msg.delete()
+                    await SD.delete()
+                except:
+                    pass
+
+
+        elif verify_status['is_verified']:
+            reply_markup = InlineKeyboardMarkup(
+                [[InlineKeyboardButton("• ᴀʙᴏᴜᴛ ᴍᴇ", callback_data="about"),
+                  InlineKeyboardButton("ᴄʟᴏsᴇ •", callback_data="close")]]
+            )
+            await message.reply_text(
+                text=START_MSG.format(
                     first=message.from_user.first_name,
                     last=message.from_user.last_name,
                     username=None if not message.from_user.username else '@' + message.from_user.username,
                     mention=message.from_user.mention,
                     id=message.from_user.id
                 ),
-                reply_markup=InlineKeyboardMarkup(buttons),
-                quote=True,
-                disable_web_page_preview=True
+                reply_markup=reply_markup,
+                disable_web_page_preview=True,
+                quote=True
             )
+
+        else:
+            verify_status = await get_verify_status(id)
+            if IS_VERIFY and not verify_status['is_verified']:
+                short_url = f"api.shareus.io"
+                TUT_VID = f"https://t.me/How_to_Download_7x/32"
+                token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+                await update_verify_status(id, verify_token=token, link="")
+                link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API,f'https://telegram.dog/{client.username}?start=verify_{token}')
+                btn = [
+                    [InlineKeyboardButton("𝐂𝐥𝐢𝐜𝐤 𝐇𝐞𝐫𝐞", url=link)],
+                    [InlineKeyboardButton('𝐇𝐨𝐰 𝐓𝐨 𝐨𝐩𝐞𝐧 𝐭𝐡𝐢𝐬 𝐥𝐢𝐧𝐤', url=TUT_VID)]
+                ]
+                await message.reply(f"𝐘𝐨𝐮𝐫 𝐀𝐝𝐬 𝐭𝐨𝐤𝐞𝐧 𝐢𝐬 𝐞𝐱𝐩𝐢𝐫𝐞𝐝, 𝐫𝐞𝐟𝐫𝐞𝐬𝐡 𝐲𝐨𝐮𝐫 𝐭𝐨𝐤𝐞𝐧 𝐚𝐧𝐝 𝐭𝐫𝐲 𝐚𝐠𝐚𝐢𝐧. \n\n𝐓𝐨𝐤𝐞𝐧 𝐓𝐢𝐦𝐞𝐨𝐮𝐭: {get_exp_time(VERIFY_EXPIRE)}\n\n𝐖𝐡𝐚𝐭 𝐢𝐬 𝐭𝐡𝐞 𝐭𝐨𝐤𝐞𝐧?\n\n𝐓𝐡𝐢𝐬 𝐢𝐬 𝐚𝐧 𝐚𝐝𝐬 𝐭𝐨𝐤𝐞𝐧. 𝐈𝐟 𝐲𝐨𝐮 𝐩𝐚𝐬𝐬 𝟏 𝐚𝐝, 𝐲𝐨𝐮 𝐜𝐚𝐧 𝐮𝐬𝐞 𝐭𝐡𝐞 𝐛𝐨𝐭 𝐟𝐨𝐫 𝟐𝟒 𝐇𝐨𝐮𝐫 𝐚𝐟𝐭𝐞𝐫 𝐩𝐚𝐬𝐬𝐢𝐧𝐠 𝐭𝐡𝐞 𝐚𝐝.", reply_markup=InlineKeyboardMarkup(btn), protect_content=False, quote=True)
+
+
+
+    
+        
+#=====================================================================================##
+
+WAIT_MSG = """"<b>Processing ...</b>"""
+
+REPLY_ERROR = """<code>Use this command as a replay to any telegram message with out any spaces.</code>"""
+
+#=====================================================================================##
+
+    
+    
+            [
+                InlineKeyboardButton(
+                    text = '• ɴᴏᴡ ᴄʟɪᴄᴋ ʜᴇʀᴇ •',
+                    url = f"https://t.me/{client.username}?start={message.command[1]}"
+                )
+            ]
+        )
+    except IndexError:
+        pass
+
+    await message.reply(
+        text = FORCE_MSG.format(
+                first = message.from_user.first_name,
+                last = message.from_user.last_name,
+                username = None if not message.from_user.username else '@' + message.from_user.username,
+                mention = message.from_user.mention,
+                id = message.from_user.id
+            ),
+        reply_markup = InlineKeyboardMarkup(buttons),
+        quote = True,
+        disable_web_page_preview = True
+    )
 
 @Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
 async def get_users(client: Bot, message: Message):
