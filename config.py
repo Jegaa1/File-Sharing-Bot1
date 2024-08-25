@@ -37,7 +37,7 @@ SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "modijiurl.com")
 SHORTLINK_API = os.environ.get("SHORTLINK_API", "e5a0df550303e31db72c8924e40e706976a2adb2")
 VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', 21600)) # Add time in seconds
 #USE_SHORTLINK = True if os.environ.get('USE_SHORTLINK', "True") == "TRUE" else False
-TUT_VID = os.environ.get("TUT_VID","https://t.me/demoshort/55")
+TUT_VID = os.environ.get("TUT_VID","https://t.me/demoshort/58")
 IS_VERIFY = os.environ.get("IS_VERIFY", "True")
 
 #force sub channel id, if you want enable force sub
