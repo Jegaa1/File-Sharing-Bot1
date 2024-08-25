@@ -33,8 +33,8 @@ DB_NAME = os.environ.get("DATABASE_NAME", "leecher")
 
 #Shortner (token system) 
 
-SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "publicearn.com")
-SHORTLINK_API = os.environ.get("SHORTLINK_API", "73a4c60a64ca6c75279d14238fd85cc9e779c2ad")
+SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "modijiurl.com")
+SHORTLINK_API = os.environ.get("SHORTLINK_API", "e5a0df550303e31db72c8924e40e706976a2adb2")
 VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', 21600)) # Add time in seconds
 #USE_SHORTLINK = True if os.environ.get('USE_SHORTLINK', "True") == "TRUE" else False
 TUT_VID = os.environ.get("TUT_VID","https://t.me/demoshort/55")
